@@ -25,8 +25,15 @@ namespace LiquidState.Sample
             config.ForState(State.Ringing)
                 .OnEntry(() => Console.WriteLine("OnEntry of Ringing"))
                 .OnExit(() => Console.WriteLine("OnExit of Ringing"))
-                .Permit(connectTriggerWithParameter, State.Connected,
-                    name => { Console.WriteLine("Attempting to connect to " + name); })
+                .PermitDynamic(connectTriggerWithParameter,
+                    name => DynamicState.Create(name == "Alice" ? State.Connected : State.Off),
+                    (trigger, name) =>
+                    {
+                        if (trigger.Destination == State.Connected)
+                            Console.WriteLine("Attempting to connect to " + name);
+                        else
+                            Console.WriteLine("Hanging up on " + name);
+                    })
                 .Permit(Trigger.Talk, State.Talking, () => { Console.WriteLine("Attempting to talk"); });
 
             config.ForState(State.Connected)
@@ -48,6 +55,10 @@ namespace LiquidState.Sample
 
             machine.Fire(Trigger.Talk);
             machine.Fire(Trigger.Ring);
+            machine.Fire(connectTriggerWithParameter, "Alice");
+            machine.Fire(Trigger.TurnOff);
+            machine.Fire(Trigger.Ring);
+            machine.Fire(connectTriggerWithParameter, "Bob");
         }
 
         public static void LiquidStateAwaitableSyncTest()
@@ -66,8 +77,19 @@ namespace LiquidState.Sample
             config.ForState(State.Ringing)
                 .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Ringing"))
                 .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Ringing"))
-                .Permit(connectTriggerWithParameter, State.Connected,
-                    async name => { await AsyncConsoleWriteLine("Attempting to connect to " + name); })
+                .PermitDynamic(connectTriggerWithParameter,
+                    async name =>
+                    {
+                        await Task.Yield();
+                        return DynamicState.Create(name == "Alice" ? State.Connected : State.Off);
+                    },
+                    async (trigger, name) =>
+                    {
+                        if (trigger.Destination == State.Connected)
+                            await AsyncConsoleWriteLine("Attempting to connect to " + name);
+                        else
+                            await AsyncConsoleWriteLine("Hanging up on " + name);
+                    })
                 .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); });
 
             config.ForState(State.Connected)
@@ -89,7 +111,10 @@ namespace LiquidState.Sample
 
             machine.FireAsync(Trigger.Talk).Wait();
             machine.FireAsync(Trigger.Ring).Wait();
-            machine.FireAsync(Trigger.Talk).Wait();
+            machine.FireAsync(connectTriggerWithParameter, "Alice").Wait();
+            machine.FireAsync(Trigger.TurnOff).Wait();
+            machine.FireAsync(Trigger.Ring).Wait();
+            machine.FireAsync(connectTriggerWithParameter, "Bob").Wait();
         }
 
         public static async Task LiquidStateAsyncTest()
