@@ -15,7 +15,12 @@ Installation
 > Install-Package LiquidState
 
 **Supported Platforms:**
-> .NETPlatform 1.0 (Formerly PCL259 profile - Supports .NETCore, .NETDesktop, Xamarin and Mono) 
+> .NETStandard 2.0
+
+**From Source:**
+> dotnet run --project LiquidState.Sample/LiquidState.Sample.csproj
+
+> dotnet pack LiquidState/LiquidState.csproj -c Release /p:Version=x.y.z
 
 Highlights
 ----

@@ -55,35 +55,35 @@ namespace LiquidState.Sample
             var config = StateMachineFactory.CreateAwaitableConfiguration<State, Trigger>();
 
             config.ForState(State.Off)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Off"))
-                .OnExit(async () => Console.WriteLine("OnExit of Off"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Off"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Off"))
                 .PermitReentry(Trigger.TurnOff)
-                .Permit(Trigger.Ring, State.Ringing, async () => { Console.WriteLine("Attempting to ring"); })
-                .Permit(Trigger.Connect, State.Connected, async () => { Console.WriteLine("Connecting"); });
+                .Permit(Trigger.Ring, State.Ringing, async () => { await AsyncConsoleWriteLine("Attempting to ring"); })
+                .Permit(Trigger.Connect, State.Connected, async () => { await AsyncConsoleWriteLine("Connecting"); });
 
             var connectTriggerWithParameter = config.SetTriggerParameter<string>(Trigger.Connect);
 
             config.ForState(State.Ringing)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Ringing"))
-                .OnExit(async () => Console.WriteLine("OnExit of Ringing"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Ringing"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Ringing"))
                 .Permit(connectTriggerWithParameter, State.Connected,
-                    async name => { Console.WriteLine("Attempting to connect to " + name); })
-                .Permit(Trigger.Talk, State.Talking, async () => { Console.WriteLine("Attempting to talk"); });
+                    async name => { await AsyncConsoleWriteLine("Attempting to connect to " + name); })
+                .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); });
 
             config.ForState(State.Connected)
-                .OnEntry(async () => Console.WriteLine("AOnEntry of Connected"))
-                .OnExit(async () => Console.WriteLine("AOnExit of Connected"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("AOnEntry of Connected"))
+                .OnExit(async () => await AsyncConsoleWriteLine("AOnExit of Connected"))
                 .PermitReentry(Trigger.Connect)
-                .Permit(Trigger.Talk, State.Talking, async () => { Console.WriteLine("Attempting to talk"); })
-                .Permit(Trigger.TurnOff, State.Off, async () => { Console.WriteLine("Turning off"); });
+                .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); })
+                .Permit(Trigger.TurnOff, State.Off, async () => { await AsyncConsoleWriteLine("Turning off"); });
 
 
             config.ForState(State.Talking)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Talking"))
-                .OnExit(async () => Console.WriteLine("OnExit of Talking"))
-                .Permit(Trigger.TurnOff, State.Off, async () => { Console.WriteLine("Turning off"); })
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Talking"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Talking"))
+                .Permit(Trigger.TurnOff, State.Off, async () => { await AsyncConsoleWriteLine("Turning off"); })
                 .PermitDynamic(Trigger.Ring, () => DynamicState.Create(State.Ringing),
-                    async () => { Console.WriteLine("Attempting to ring"); });
+                    async () => { await AsyncConsoleWriteLine("Attempting to ring"); });
 
             var machine = StateMachineFactory.Create(State.Ringing, config, queued: false);
 
@@ -97,35 +97,35 @@ namespace LiquidState.Sample
             var config = StateMachineFactory.CreateAwaitableConfiguration<State, Trigger>();
 
             config.ForState(State.Off)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Off"))
-                .OnExit(async () => Console.WriteLine("OnExit of Off"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Off"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Off"))
                 .PermitReentry(Trigger.TurnOff)
-                .Permit(Trigger.Ring, State.Ringing, async () => { Console.WriteLine("Attempting to ring"); })
-                .Permit(Trigger.Connect, State.Connected, async () => { Console.WriteLine("Connecting"); });
+                .Permit(Trigger.Ring, State.Ringing, async () => { await AsyncConsoleWriteLine("Attempting to ring"); })
+                .Permit(Trigger.Connect, State.Connected, async () => { await AsyncConsoleWriteLine("Connecting"); });
 
             var connectTriggerWithParameter = config.SetTriggerParameter<string>(Trigger.Connect);
 
             config.ForState(State.Ringing)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Ringing"))
-                .OnExit(async () => Console.WriteLine("OnExit of Ringing"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Ringing"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Ringing"))
                 .Permit(connectTriggerWithParameter, State.Connected,
-                    async name => { Console.WriteLine("Attempting to connect to " + name); })
-                .Permit(Trigger.Talk, State.Talking, async () => { Console.WriteLine("Attempting to talk"); })
+                    async name => { await AsyncConsoleWriteLine("Attempting to connect to " + name); })
+                .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); })
                 .PermitReentry(Trigger.Ring);
 
             config.ForState(State.Connected)
-                .OnEntry(async () => Console.WriteLine("AOnEntry of Connected"))
-                .OnExit(async () => Console.WriteLine("AOnExit of Connected"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("AOnEntry of Connected"))
+                .OnExit(async () => await AsyncConsoleWriteLine("AOnExit of Connected"))
                 .PermitReentry(Trigger.Connect)
-                .Permit(Trigger.Talk, State.Talking, async () => { Console.WriteLine("Attempting to talk"); })
-                .Permit(Trigger.TurnOff, State.Off, async () => { Console.WriteLine("Turning off"); });
+                .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); })
+                .Permit(Trigger.TurnOff, State.Off, async () => { await AsyncConsoleWriteLine("Turning off"); });
 
 
             config.ForState(State.Talking)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Talking"))
-                .OnExit(async () => Console.WriteLine("OnExit of Talking"))
-                .Permit(Trigger.TurnOff, State.Off, async () => { Console.WriteLine("Turning off"); })
-                .Permit(Trigger.Ring, State.Ringing, async () => { Console.WriteLine("Attempting to ring"); })
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Talking"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Talking"))
+                .Permit(Trigger.TurnOff, State.Off, async () => { await AsyncConsoleWriteLine("Turning off"); })
+                .Permit(Trigger.Ring, State.Ringing, async () => { await AsyncConsoleWriteLine("Attempting to ring"); })
                 .PermitReentry(Trigger.Talk);
 
 
@@ -234,11 +234,11 @@ namespace LiquidState.Sample
             var config = StateMachineFactory.CreateAwaitableConfiguration<State, Trigger>();
 
             config.ForState(State.Off)
-                .OnEntry(async () => Console.WriteLine("OnEntry of Off"))
-                .OnExit(async () => Console.WriteLine("OnExit of Off"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("OnEntry of Off"))
+                .OnExit(async () => await AsyncConsoleWriteLine("OnExit of Off"))
                 .PermitReentry(Trigger.TurnOff)
-                .Permit(Trigger.Ring, State.Ringing, async () => { Console.WriteLine("Attempting to ring"); })
-                .Permit(Trigger.Connect, State.Connected, async () => { Console.WriteLine("Connecting"); });
+                .Permit(Trigger.Ring, State.Ringing, async () => { await AsyncConsoleWriteLine("Attempting to ring"); })
+                .Permit(Trigger.Connect, State.Connected, async () => { await AsyncConsoleWriteLine("Connecting"); });
 
             var connectTriggerWithParameter = config.SetTriggerParameter<string>(Trigger.Connect);
 
@@ -250,11 +250,11 @@ namespace LiquidState.Sample
                 .Permit(Trigger.Talk, State.Talking, () => { Console.WriteLine("Attempting to talk"); });
 
             config.ForState(State.Connected)
-                .OnEntry(async () => Console.WriteLine("AOnEntry of Connected"))
-                .OnExit(async () => Console.WriteLine("AOnExit of Connected"))
+                .OnEntry(async () => await AsyncConsoleWriteLine("AOnEntry of Connected"))
+                .OnExit(async () => await AsyncConsoleWriteLine("AOnExit of Connected"))
                 .PermitReentry(Trigger.Connect)
-                .Permit(Trigger.Talk, State.Talking, async () => { Console.WriteLine("Attempting to talk"); })
-                .Permit(Trigger.TurnOff, State.Off, async () => { Console.WriteLine("Turning off"); });
+                .Permit(Trigger.Talk, State.Talking, async () => { await AsyncConsoleWriteLine("Attempting to talk"); })
+                .Permit(Trigger.TurnOff, State.Off, async () => { await AsyncConsoleWriteLine("Turning off"); });
 
             config.ForState(State.Talking)
                 .OnEntry(() => Console.WriteLine("OnEntry of Talking"))
@@ -267,6 +267,12 @@ namespace LiquidState.Sample
             await machine.FireAsync(Trigger.Talk);
             await machine.FireAsync(Trigger.Ring);
             await machine.FireAsync(connectTriggerWithParameter, "John Doe");
+        }
+
+        private static Task AsyncConsoleWriteLine(string msg, params object[] args)
+        {
+            Console.WriteLine(msg, args);
+            return Task.CompletedTask;
         }
 
         private enum State

@@ -7,6 +7,7 @@ using System;
 using System.Diagnostics.Contracts;
 using LiquidState.Core;
 using LiquidState.Common;
+using Contract = LiquidState.Common.Contract;
 
 namespace LiquidState.Synchronous.Core
 {
