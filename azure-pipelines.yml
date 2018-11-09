@@ -29,7 +29,7 @@ jobs:
 
 - job: Publish
   dependsOn: Build
-  confition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
