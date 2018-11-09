@@ -3,28 +3,46 @@
 # Add steps that build, run tests, deploy, and more:
 # https://aka.ms/yaml
 
-pool:
-  vmImage: 'Ubuntu 16.04'
+trigger:
+  branches:
+    include:
+    - master
 
-steps:
-# .NET Core
-# Pack NuGet packages.
-- task: DotNetCoreCLI@2
-  displayName: 'Build nuget package'
-  inputs:
-    command: 'pack'
-    configuration: 'release'
-    packagesToPack: 'LiquidState/*.csproj'
-    verbosityPack: 'normal'
-    #versioningScheme: 'off' # Options: off, byPrereleaseNumber, byEnvVar, byBuildNumber
-    #versionEnvVar: # Required when versioningScheme == byEnvVar
-    #majorVersion: '1' # Required when versioningScheme == byPrereleaseNumber
-    #minorVersion: '0' # Required when versioningScheme == byPrereleaseNumber
-    #patchVersion: '0' # Required when versioningScheme == byPrereleaseNumber
-    #buildProperties: # Optional
+pr:
+  branches:
+    include:
+    - master
 
-# Publish Artifacts
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish build artifacts'
-  inputs:
-    artifactName: 'Packages'
+variables:
+  majorVersion: 1
+  minorVersion: 0
+
+name: $(majorVersion).$(minorVersion).$(Rev:r)
+
+jobs:
+- job: Build
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - script: dotnet build
+    displayName: 'dotnet build'
+
+- job: Publish
+  dependsOn: Build
+  confition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet pack'
+    inputs:
+      command: 'pack'
+      configuration: 'release'
+      packagesToPack: 'LiquidState/*.csproj'
+      verbosityPack: 'normal'
+      versioningScheme: byPrereleaseNumber
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'publish build artifacts'
+    inputs:
+      artifactName: 'Packages'
