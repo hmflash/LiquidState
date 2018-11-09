@@ -40,7 +40,7 @@ jobs:
       configuration: 'release'
       packagesToPack: 'LiquidState/*.csproj'
       verbosityPack: 'normal'
-      versioningScheme: byPrereleaseNumber
+      versioningScheme: byBuildNumber
 
   - task: PublishBuildArtifacts@1
     displayName: 'publish build artifacts'
