@@ -7,7 +7,7 @@ Heavily inspired by the excellent state machine library [**Stateless**](https://
 
 [![Build Status](https://dev.azure.com/hmflash/LiquidState/_apis/build/status/Build%20NuGet%20Package)](https://dev.azure.com/hmflash/LiquidState/_build/latest?definitionId=1)
 
-[![NuGet badge](https://buildstats.info/nuget/LiquidState)](https://www.nuget.org/packages/LiquidState)
+[![NuGet badge](https://buildstats.info/nuget/LiquidState.Unofficial)](https://www.nuget.org/packages/LiquidState.Unofficial)
 
 Installation
 ----

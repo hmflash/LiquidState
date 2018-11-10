@@ -7,11 +7,17 @@ trigger:
   branches:
     include:
     - master
+  paths:
+    exclude:
+    - README.md
 
 pr:
   branches:
     include:
     - master
+  paths:
+    exclude:
+    - README.md
 
 variables:
   majorVersion: 1
@@ -46,3 +52,11 @@ jobs:
     displayName: 'publish build artifacts'
     inputs:
       artifactName: 'Packages'
+
+  - task: DotNetCoreCLI@2
+    displayName: 'dotnet push'
+    inputs:
+      command: 'push'
+      nuGetFeedType: 'external'
+      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
+      publishFeedCredentials: 'nuget'

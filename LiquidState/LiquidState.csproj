@@ -1,7 +1,23 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>LiquidState.Unofficial</PackageId>
+    <Authors>Peach Tech</Authors>
+    <Company>Peach Tech</Company>
+    <Description>Efficient state machines for .NET with both synchronous and asynchronous support
+Fork of https://www.nuget.org/packages/LiquidState/</Description>
+    <Product>LiquidState</Product>
+    <RepositoryUrl>https://github.com/hmflash/LiquidState.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageReleaseNotes>* Target netstandard2.0
+* Include trigger in the callback state
+* Pass trigger param to target state predicate</PackageReleaseNotes>
+    <Copyright>Copyright ©  2018</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0.html</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/hmflash/LiquidState/</PackageProjectUrl>
+    <PackageIconUrl>https://github.com/hmflash/LiquidState/raw/master/Misc/Logo.png</PackageIconUrl>
+    <PackageTags>state machine async high-performance</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
